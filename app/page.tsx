@@ -116,7 +116,7 @@ export default function HomePage() {
   return (
     <main className="mx-auto max-w-6xl px-4 py-10 sm:px-6 lg:px-8">
       <header className="mb-8 space-y-3">
-        <h1 className="text-3xl font-bold text-white sm:text-4xl">Bug Bounty Finder - Automated Vulnerability Scanner</h1>
+        <h1 className="text-3xl font-bold text-white sm:text-4xl">"Bugz" A Bug Finder - Automated Vulnerability Scanner</h1>
         <p className="text-slate-300">
           Scan GitHub repos or upload files to find security vulnerabilities instantly.
         </p>
