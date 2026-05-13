@@ -35,24 +35,35 @@ export const parsePackageJson = (content: string): Dependency[] => {
 };
 
 export const parsePythonRequirements = (content: string): Dependency[] => {
-  return content
-    .split(/\r?\n/)
-    .map((line) => line.trim())
-    .filter((line) => line.length > 0 && !line.startsWith("#"))
-    .map((line) => {
-      const cleanLine = line.split("#")[0].trim();
-      const match = cleanLine.match(/^([A-Za-z0-9._\-]+)\s*(?:==|>=|<=|~=|>|<)\s*([^\s;]+)/);
-      if (!match) {
-        return null;
-      }
-      return {
-        name: match[1],
-        version: normalizeVersion(match[2]),
-        ecosystem: "pip" as const,
-      };
-    })
-    .filter((dep): dep is Dependency => dep !== null && dep.version.length > 0);
+  const dependencies: Dependency[] = [];
+
+  for (const rawLine of content.split(/\r?\n/)) {
+    const line = rawLine.trim();
+    if (!line || line.startsWith("#")) {
+      continue;
+    }
+
+    const cleanLine = line.split("#")[0].trim();
+    const match = cleanLine.match(/^([A-Za-z0-9._\-]+)\s*(?:==|>=|<=|~=|>|<)\s*([^\s;]+)/);
+    if (!match) {
+      continue;
+    }
+
+    const version = normalizeVersion(match[2]);
+    if (!version) {
+      continue;
+    }
+
+    dependencies.push({
+      name: match[1],
+      version,
+      ecosystem: "pip",
+    });
+  }
+
+  return dependencies;
 };
+
 
 export const parseGoMod = (content: string): Dependency[] => {
   const lines = content.split(/\r?\n/);
