@@ -176,9 +176,11 @@ export default function HomePage() {
             vulnerabilities={scanResults.vulnerabilities}
             summary={scanResults.summary}
             onScanAnother={() => {
+              localStorage.removeItem("bug-bounty-finder:last-scan");
               setScanResults(null);
               setError(null);
-            }}
+}}
+
           />
         </div>
       )}
